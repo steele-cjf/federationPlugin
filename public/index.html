@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+  <link rel="icon" href="./favicon.ico">
+  <title></title>
+</head>
+<style>
+  body {
+    background-color: #f8f8f9;
+    font-size: 12px;
+  }
+
+  .loader {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: #fff;
+    align-items: center;
+  }
+
+  .loader img {
+    margin-bottom: 16px;
+  }
+
+  .progress {
+    position: relative;
+    width: 160px;
+    height: 3px;
+    background: #E1E5EB;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-status {
+    position: absolute;
+    width: 0;
+    height: 3px;
+    top: 0;
+    left: 0;
+    background: linear-gradient(90deg, #0A8BF5 0%, #0A8BF5 50%);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+</style>
+
+<body>
+  <div id="Loading" class="loader">
+    <img width="48" height="48" src="./loading.png" alt="">
+    <!-- 暂时去掉<div class="progress">
+        <div class="progress-status" id="len"></div>
+      </div> -->
+  </div>
+
+  <div id="app"></div>
+  <!-- built files will be auto injected -->
+</body>
+
+</html>
+<script type="text/javascript">
+  // 兼容旧页面 更新cookie问题
+  function getCookiesParams(name) {
+    const reg = new RegExp(`${name}`)
+    let cookies = document.cookie.split(';')
+    if (cookies && cookies.length) {
+      for (var i = 0; i < cookies.length; i++) {
+        let item = cookies[i]
+        let result = item.split('=')
+        if (result && result.length > 1 && reg.test(result[0])) {
+          return result[1]
+        }
+      }
+    }
+    return ''
+  }
+  // window.onload = async function () {
+  //   const url = await getCookiesParams('icoUrl')
+  //   changeFavicon(url)
+  // }
+  // // 更换浏览器ico
+  // function changeFavicon(link) {
+  //   let $favicon = document.querySelector('link[rel="icon"]')
+  //   if ($favicon !== null) {
+  //     $favicon.href = link
+  //   } else {
+  //     $favicon = document.createElement("link")
+  //     $favicon.rel = "icon"
+  //     $favicon.href = link
+  //     document.head.appendChild($favicon)
+  //   }
+  // }
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState == 'hidden') { //切离该页面时执行
+      sessionStorage.setItem('auth', getCookiesParams('auth'))
+    } else if (document.visibilityState == 'visible') { //切换到该页面时执行
+      let auth = sessionStorage.getItem('auth')
+      if (auth && auth !== getCookiesParams('auth')) {
+        sessionStorage.removeItem('auth')
+        let {
+          href
+        } = window.location
+        let loc = href.split('#')
+        window.location.href = loc.length ? loc[0] : '/'
+        // window.location.reload()
+      }
+    }
+  })
+
+</script>
