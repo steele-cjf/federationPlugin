@@ -1,5 +1,8 @@
 const path = require("path");
-const FederationPlugin = require('./federationPlugin/index')
+const FederationPlugin = require('./plugin/FederationPlugin/index')
+const TestPlugin = require('./plugin/TestPlugin/index')
+const CleanWebpackPlugin = require('./plugin/CleanWebpackPlugin/index')
+const HtmlPlugin = require('./plugin/HtmlPlugin/index')
 module.exports = {
     mode: 'production',
     entry: ['./index.js'],
@@ -13,9 +16,17 @@ module.exports = {
         path: path.resolve(__dirname, "./dist")
     },
     plugins:[
-        new FederationPlugin({
-            name:'tmx',
-            remote: 'http://wwww.baidu.com'
+        new HtmlPlugin({
+            title: "CMP",
+            favicon: path.resolve("public/favicon.ico"),
+            template: path.resolve("public/index.html")
+        }),
+        // new FederationPlugin({
+        //     name:'tmx',
+        //     remote: 'http://wwww.baidu.com'
+        // }),
+        new CleanWebpackPlugin({
+            cleanOnceBeforeBuildPatterns: ['dist/*', 'build/*.js']
         })
     ]
 }

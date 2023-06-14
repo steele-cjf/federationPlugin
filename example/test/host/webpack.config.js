@@ -13,7 +13,7 @@ module.exports = {
         }
     },
     resolve: {
-        extensions: [".vue", ".js", "json"]
+        extensions: [".js", "json"]
     },
     output: {
         publicPath: '/',
